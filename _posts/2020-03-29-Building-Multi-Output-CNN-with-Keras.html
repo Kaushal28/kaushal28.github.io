@@ -5,6 +5,7 @@ comments: true
 images:
   - url: /assets/MultiOutputCNN.png
 ---
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 <br>
 <p> Recently I participated in a Kaggle computer vision competition which included multi-label image classification problem. Here is the link to Kaggle competition: <a href='https://www.kaggle.com/c/bengaliai-cv19'> https://www.kaggle.com/c/bengaliai-cv19 </a> </p>
 
@@ -17,7 +18,7 @@ images:
 <li> Create a single CNN with multiple outputs. </li>
 </ul>
   
-<p> Let’s first see why creating separate models for each label is not a feasible approach. When we create separate models, almost all the layers will be the same except the last one or two layers. So the training time will be very high (if a single model takes `x` time, then `n` separate models will take `n*x` time). </p>
+<p> Let’s first see why creating separate models for each label is not a feasible approach. When we create separate models, almost all the layers will be the same except the last one or two layers. So the training time will be very high (if a single model takes $x$ time, then $n$ separate models will take $n * x$ time). </p>
 
 <p> Now let’s explore CNN with multiple outputs in detail. </p>
 
