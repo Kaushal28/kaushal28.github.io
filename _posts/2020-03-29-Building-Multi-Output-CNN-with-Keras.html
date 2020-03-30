@@ -40,7 +40,7 @@ images:
 
 <p> Let’s first create a basic CNN model with a few Convolutional and Pooling layers. </p>
 
-{% highlight python %} 
+'''python
 inputs = Input(shape = (IMG_SIZE, IMG_SIZE, 1))  # Considering gray scale images
 
 model = Conv2D(filters=32, kernel_size=(3, 3), padding='SAME', activation='relu', input_shape=(IMG_SIZE, IMG_SIZE, 1))(inputs)
@@ -74,7 +74,7 @@ head_vowel = Dense(11, activation = 'softmax')(dense)
 head_consonant = Dense(7, activation = 'softmax')(dense)
 
 model = Model(inputs=inputs, outputs=[head_root, head_vowel, head_consonant])
-{% endhighlight %}
+'''
 
 <br>
 
