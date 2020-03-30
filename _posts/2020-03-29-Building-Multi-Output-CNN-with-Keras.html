@@ -5,16 +5,17 @@ comments: true
 images:
   - url: /assets/MultiOutputCNN.png
 ---
+<br>
 <p> Recently I participated in a Kaggle computer vision competition which included multi-label image classification problem. Here is the link to Kaggle competition: https://www.kaggle.com/c/bengaliai-cv19 </p>
 
 <p> Here’s a brief description about the competition: We were supposed to classify given Bengali graphemes components (similar to English phonemes) into one of 186 classes (168 grapheme root, 11 vowel diacritics and 7 consonant diacritics). Every image will have three components and we were supposed to identify these three components in the given image. </p>
 
 <p> So as you can see, this is a multi-label classification problem (Each image with 3 labels). To address these type of problems using CNNs, there are following two ways: </p>
 
-<li>
-<ul> Create 3 separate models, one for each label. </ul>
-<ul> Create a single CNN with multiple outputs. </ul>
-</li>
+<ul>
+<li> Create 3 separate models, one for each label. </li>
+<li> Create a single CNN with multiple outputs. </li>
+</ul>
   
 <p> Let’s first see why creating separate models for each label is not a feasible approach. When we create separate models, almost all the layers will be the same except the last one or two layers. So the training time will be very high (if a single model takes `x` time, then `n` separate models will take `n*x` time). </p>
 
