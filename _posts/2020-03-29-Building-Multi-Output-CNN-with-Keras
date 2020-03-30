@@ -3,7 +3,7 @@ layout: post
 excerpt: Don't worry, it's easier than it looks
 comments: true
 images:
-  - url: /assets/Lorem-Ipsum-alternatives.png
+  - url: /assets/MultiOutputCNN.png
 ---
 <p> Recently I participated in a Kaggle computer vision competition which included multi-label image classification problem. Here is the link to Kaggle competition: https://www.kaggle.com/c/bengaliai-cv19 </p>
 
