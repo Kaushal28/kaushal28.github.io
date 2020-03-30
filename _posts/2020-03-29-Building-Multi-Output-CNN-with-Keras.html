@@ -34,6 +34,50 @@ images:
 
 <img src="/assets/MultiOutputCNN.png">
 
+<p> As you can see in above diagram, CNN takes a single input `X` (Generally with shape (m, channels, height, width) where m is batch size) and spits out three outputs (here Y2, Y2, Y3 generally with shape (m, n_classes) again m is batch size). </p>
+
+<p> For each output, we can specify a separate name, callback function (for example learning rate annealer), activation function, even the loss function and metrics. Now let’s see how to implement all these using Keras. </p>
+
+<p> Let’s first create a basic CNN model with a few Convolutional and Pooling layers. </p>
+
+{% highlight python %} 
+inputs = Input(shape = (IMG_SIZE, IMG_SIZE, 1))  # Considering gray scale images
+
+model = Conv2D(filters=32, kernel_size=(3, 3), padding='SAME', activation='relu', input_shape=(IMG_SIZE, IMG_SIZE, 1))(inputs)
+model = Conv2D(filters=32, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
+model = Conv2D(filters=32, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
+model = Conv2D(filters=32, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
+model = BatchNormalization(momentum=0.15)(model)
+model = MaxPool2D(pool_size=(2, 2))(model)
+model = Conv2D(filters=32, kernel_size=(5, 5), padding='SAME', activation='relu')(model)
+model = Dropout(rate=0.3)(model)
+
+model = Conv2D(filters=64, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
+model = Conv2D(filters=64, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
+model = Conv2D(filters=64, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
+model = Conv2D(filters=64, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
+model = BatchNormalization(momentum=0.15)(model)
+model = MaxPool2D(pool_size=(2, 2))(model)
+model = Conv2D(filters=256, kernel_size=(5, 5), padding='SAME', activation='relu')(model)
+model = BatchNormalization(momentum=0.15)(model)
+model = Dropout(rate=0.3)(model)
+
+# A few flatten layers
+model = Flatten()(model)
+model = Dense(1024, activation = "relu")(model)
+model = Dropout(rate=0.3)(model)
+dense = Dense(512, activation = "relu")(model)
+
+# Finally what you are waiting for: Multiple outputs!
+head_root = Dense(168, activation = 'softmax')(dense)  # Here 168 is the number of classes.
+head_vowel = Dense(11, activation = 'softmax')(dense)
+head_consonant = Dense(7, activation = 'softmax')(dense)
+
+model = Model(inputs=inputs, outputs=[head_root, head_vowel, head_consonant])
+{% endhighlight %}
+
+<br>
+
 <div id="disqus_thread"></div>
 <script>
 
