@@ -142,7 +142,14 @@ Non-trainable params: 1,088
 __________________________________________________________________________________________________
 </pre>
 
+<p> Now let's compile our model by providing the loss function, optimizer and metrics. Here I'll use the same loss function for all the outputs but multiple loss functions can be used for each outputs by passing the list of loss functions. </p>
+{% highlight python %}
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+{% endhighlight %}
 
+
+
+<br>
 <div id="disqus_thread"></div>
 <script>
 
