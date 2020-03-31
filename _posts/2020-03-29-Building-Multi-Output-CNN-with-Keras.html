@@ -41,44 +41,107 @@ images:
 <p> Let’s first create a basic CNN model with a few Convolutional and Pooling layers. </p>
 
 {% highlight python %}
-inputs = Input(shape = (IMG_SIZE, IMG_SIZE, 1))  # Considering gray scale images
+# Necessary imports
+%tensorflow_version 1.x
+from tensorflow import keras
+from keras.layers import Dense,Conv2D,Flatten,MaxPool2D,Dropout,BatchNormalization, Input
+from keras.optimizers import Adam
+from keras.callbacks import ReduceLROnPlateau
+from keras.models import Model
+{% endhighlight %}
+
+Now defining the CNN Model:
+
+{% highlight python %}
+IMG_SIZE = 64
+inputs = Input(shape = (IMG_SIZE, IMG_SIZE, 1))
 
 model = Conv2D(filters=32, kernel_size=(3, 3), padding='SAME', activation='relu', input_shape=(IMG_SIZE, IMG_SIZE, 1))(inputs)
-model = Conv2D(filters=32, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
-model = Conv2D(filters=32, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
 model = Conv2D(filters=32, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
 model = BatchNormalization(momentum=0.15)(model)
 model = MaxPool2D(pool_size=(2, 2))(model)
 model = Conv2D(filters=32, kernel_size=(5, 5), padding='SAME', activation='relu')(model)
 model = Dropout(rate=0.3)(model)
 
-model = Conv2D(filters=64, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
-model = Conv2D(filters=64, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
-model = Conv2D(filters=64, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
-model = Conv2D(filters=64, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
+model = Conv2D(filters=256, kernel_size=(3, 3), padding='SAME', activation='relu')(model)
 model = BatchNormalization(momentum=0.15)(model)
 model = MaxPool2D(pool_size=(2, 2))(model)
 model = Conv2D(filters=256, kernel_size=(5, 5), padding='SAME', activation='relu')(model)
 model = BatchNormalization(momentum=0.15)(model)
 model = Dropout(rate=0.3)(model)
 
-# A few flatten layers
 model = Flatten()(model)
 model = Dense(1024, activation = "relu")(model)
 model = Dropout(rate=0.3)(model)
 dense = Dense(512, activation = "relu")(model)
 
-# Finally what you are waiting for: Multiple outputs!
-head_root = Dense(168, activation = 'softmax')(dense)  # Here 168 is the number of classes.
-head_vowel = Dense(11, activation = 'softmax')(dense)
-head_consonant = Dense(7, activation = 'softmax')(dense)
+head_root = Dense(168, activation = 'softmax', name='output_root')(dense)
+head_vowel = Dense(11, activation = 'softmax', name='output_vowel')(dense)
+head_consonant = Dense(7, activation = 'softmax', name='output_consonant')(dense)
 
 model = Model(inputs=inputs, outputs=[head_root, head_vowel, head_consonant])
 {% endhighlight %}
 
 <br>
 
-<p> In the last layer, notice that all the three outputs have a common input, which is the last flatten/dense layer. </p>
+<p> In the last layer, notice that all the three outputs (with name "output_root", "output_vowel", "output_consonant") have a common input, which is the last flatten/dense layer. We can see these layer connections by printing model summary as following: </p>
+
+{% highlight python %}
+model.summary()
+{% endhighlight %}
+
+This will print the following output in our case:
+<pre>
+Model: "model_1"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_1 (InputLayer)            (None, 64, 64, 1)    0                                            
+__________________________________________________________________________________________________
+conv2d_1 (Conv2D)               (None, 64, 64, 32)   320         input_1[0][0]                    
+__________________________________________________________________________________________________
+conv2d_2 (Conv2D)               (None, 64, 64, 32)   9248        conv2d_1[0][0]                   
+__________________________________________________________________________________________________
+batch_normalization_1 (BatchNor (None, 64, 64, 32)   128         conv2d_2[0][0]                   
+__________________________________________________________________________________________________
+max_pooling2d_1 (MaxPooling2D)  (None, 32, 32, 32)   0           batch_normalization_1[0][0]      
+__________________________________________________________________________________________________
+conv2d_3 (Conv2D)               (None, 32, 32, 32)   25632       max_pooling2d_1[0][0]            
+__________________________________________________________________________________________________
+dropout_1 (Dropout)             (None, 32, 32, 32)   0           conv2d_3[0][0]                   
+__________________________________________________________________________________________________
+conv2d_4 (Conv2D)               (None, 32, 32, 256)  73984       dropout_1[0][0]                  
+__________________________________________________________________________________________________
+batch_normalization_2 (BatchNor (None, 32, 32, 256)  1024        conv2d_4[0][0]                   
+__________________________________________________________________________________________________
+max_pooling2d_2 (MaxPooling2D)  (None, 16, 16, 256)  0           batch_normalization_2[0][0]      
+__________________________________________________________________________________________________
+conv2d_5 (Conv2D)               (None, 16, 16, 256)  1638656     max_pooling2d_2[0][0]            
+__________________________________________________________________________________________________
+batch_normalization_3 (BatchNor (None, 16, 16, 256)  1024        conv2d_5[0][0]                   
+__________________________________________________________________________________________________
+dropout_2 (Dropout)             (None, 16, 16, 256)  0           batch_normalization_3[0][0]      
+__________________________________________________________________________________________________
+flatten_1 (Flatten)             (None, 65536)        0           dropout_2[0][0]                  
+__________________________________________________________________________________________________
+dense_1 (Dense)                 (None, 1024)         67109888    flatten_1[0][0]                  
+__________________________________________________________________________________________________
+dropout_3 (Dropout)             (None, 1024)         0           dense_1[0][0]                    
+__________________________________________________________________________________________________
+dense_2 (Dense)                 (None, 512)          524800      dropout_3[0][0]                  
+__________________________________________________________________________________________________
+output_root (Dense)             (None, 168)          86184       dense_2[0][0]                    
+__________________________________________________________________________________________________
+output_vowel (Dense)            (None, 11)           5643        dense_2[0][0]                    
+__________________________________________________________________________________________________
+output_consonant (Dense)        (None, 7)            3591        dense_2[0][0]                    
+==================================================================================================
+Total params: 69,480,122
+Trainable params: 69,479,034
+Non-trainable params: 1,088
+__________________________________________________________________________________________________
+</pre>
+
 
 <div id="disqus_thread"></div>
 <script>
