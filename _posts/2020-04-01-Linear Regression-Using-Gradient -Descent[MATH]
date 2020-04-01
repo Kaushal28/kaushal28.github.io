@@ -65,7 +65,7 @@ plt.show()
 {% endhighlight %}
 
 <p>Which should look similar to following plot: </p>
-<img src='/assets/scatter1.jpg'></img>
+<img src='/assets/scatter1.png'></img>
 
 <p> Let's define some constants like learning rate $(\alpha)$</p>
 
@@ -129,4 +129,4 @@ plt.show()
 {% endhighlight %}
 
 <p> Which should look similar to following plot: </p>
-<img src='/assets/scatter2.jpg'></img>
+<img src='/assets/scatter2.png'></img>
