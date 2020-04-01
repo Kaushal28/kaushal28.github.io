@@ -204,6 +204,46 @@ class MultiOutputDataGenerator(keras.preprocessing.image.ImageDataGenerator):
 
 {% endhighlight %}
 
+<p> This class extends the Keras "ImageDataGenerator" class and just overrides the flow() method. All other complexities (like image augmentation, shuffling etc.) are still taken care by the super class itself. Now, let's see how to use this class and generate the training data which is compatible with keras' fit_generator() method. (fit_generator() is used when you have a python generator instead of a loop creating batches of training data).</p>
+
+
+{% highlight python %}
+
+# Data augmentation for creating more training data
+datagen = MultiOutputDataGenerator(
+    featurewise_center=False,  # set input mean to 0 over the dataset
+    samplewise_center=False,  # set each sample mean to 0
+    featurewise_std_normalization=False,  # divide inputs by std of the dataset
+    samplewise_std_normalization=False,  # divide each input by its std
+    zca_whitening=False,  # apply ZCA whitening
+    rotation_range=8,  # randomly rotate images in the range (degrees, 0 to 180)
+    zoom_range = 0.15, # Randomly zoom image 
+    width_shift_range=0.15,  # randomly shift images horizontally (fraction of total width)
+    height_shift_range=0.15,  # randomly shift images vertically (fraction of total height)
+    horizontal_flip=False,  # randomly flip images
+    vertical_flip=False)  # randomly flip images
+
+
+# This will just calculate parameters required to augment the given data. This won't perform any augmentations
+datagen.fit(x_train)
+
+ # Fit the model
+history = model.fit_generator(datagen.flow(x_train, {'output_root': y_train_root, 'output_vowel': y_train_vowel, 'output_consonant': y_train_consonant}, batch_size=batch_size),
+                          epochs = epochs, validation_data = (x_test, [y_test_root, y_test_vowel, y_test_consonant]), 
+                          steps_per_epoch=x_train.shape[0] // batch_size, 
+                          callbacks=[learning_rate_reduction_root, learning_rate_reduction_vowel, learning_rate_reduction_consonant])
+
+{% endhighlight %}
+
+<p> <strong>Note: </strong> Make sure that the keys used in calling flow() method should be same as the names of output layers of your model (here: output_root, output_vowel etc.).</p>
+<p> That's it! Now you know how to train multi-output CNNs using Keras.</p>
+<br>
+
+<p> <strong> Reference: </strong> </p>
+<ul>
+  <li> https://keras.io/models/model/ </li>
+  <li> My Kaggle Kernel: https://www.kaggle.com/kaushal2896/bengali-graphemes-starter-eda-multi-output-cnn </li>
+</ul>
 
 <br>
 <div id="disqus_thread"></div>
