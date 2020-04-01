@@ -151,13 +151,13 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 
 <p> As there is a single input, the data format for $X$ remains as it is: $(m, C, H, W)$, where $m$ is batch size. However because of multiple outputs, Keras expects a dict having output layer names as it's keys and the corresponding labels are it's values.</p>
   
-<pre>
+{% highlight python %}
 Y = {
     'output_root': [Array of shape (m, n_classes_root)],
     'output_vowel': [Array of shape (m, n_classes_vowel)],
     'output_consonant': [Array of shape (m, n_classes_consonent)]
 }
-</pre>
+{% endhighlight %}
 
 
 
