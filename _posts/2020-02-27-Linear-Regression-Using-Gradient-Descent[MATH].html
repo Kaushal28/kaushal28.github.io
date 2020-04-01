@@ -3,7 +3,7 @@ layout: post
 excerpt: Pure Numpy Implementation with all the Math explained in simple terms
 comments: true
 images:
-  - url: /assets/Math.jpg
+  - url: /assets/scatter2.png
 ---
 
 <script type="text/x-mathjax-config">
@@ -22,7 +22,7 @@ images:
 <br/>
 <p>If you remember the elementry maths you would surely know the formula of a straight line, which is $y = mx + c$. Where, $m$ is the slope and $c$ is the y-intercept of the line!</p>
 <br/>
-<p>Now when I say "the line which fits perfectly", that means the line placed in such a way that for any input $x$, it minimizes the difference between actual value (label: $y$) and the predected value $\mean{y}$. In our case, the predicted value is the point on the line at given $x$.</p>
+<p>Now when I say "the line which fits perfectly", that means the line placed in such a way that for any input $x$, it minimizes the difference between actual value (label: $y$) and the predected value $\bar{y}$. In our case, the predicted value is the point on the line at given $x$.</p>
 <p>This cost function can be given by following equation and is called "Mean Squared Error" (Here I use $\theta_0$ and $\theta_1$ instead of $m$ and $c$ for slope and y-intercept respectively.) :  </p>
 $$ E = \frac{1}{n}\sum_{i=0}^{n} (y_i - \bar{y}_i)^2 $$
 <p> Where $y$ is actual value and $\bar{y}$ is predicted value. </p>
