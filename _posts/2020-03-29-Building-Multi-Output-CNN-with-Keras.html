@@ -149,6 +149,16 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 
 <p> Till this point, it was straightforward as many low level details are abstracted by Keras. But now we can not simply use "model.fit(X, Y)" because now we have multiple $Y_i$s for each $X_i$s. So we need to create a custom training data generator which generates the data in the form Keras expects it. Let's first see the data format expected by Keras.</p> 
 
+<p> As there is a single input, the data format for $X$ remains as it is: $(m, C, H, W)$, where $m$ is batch size. However because of multiple outputs, Keras expects a dict having output layer names as it's keys and the corresponding labels are it's values.</p>
+  
+<pre>
+Y = {
+    'output_root': <Array of shape $(m, n_classes_root)$>,
+    'output_vowel': <Array of shape $(m, n_classes_vowel)$>,
+    'output_consonant': <Array of shape $(m, n_classes_consonent)$>
+}
+</pre>
+
 
 
 <br>
