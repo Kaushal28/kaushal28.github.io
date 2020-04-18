@@ -150,10 +150,10 @@ Because of isolation, containers are not aware of each other even if they are ru
 <ul>
 <li> Smallest atomic unit in docker is a container (VM in virtualization word, pod in Kubernetes etc.). If we want to roll out an app using docker, we do it using one or more containers. </li>
 <li> Images are read only and containers are these read only image layers + a thin writable layer. </li>
-<li> <img src='/assets/docker_img10.png' height='300'> </img> </li>
+<li> <img src='/assets/docker_img10.png'> </img> </li>
 <li> If any container wants to change the image file, it can’t directly change it in the image as the image is read only, instead it makes a copy of that layer into its writable layer and then writes the changes.</li>
 <li> Containers are used in microservices. Each microservice has its own container doing only a single job and communication between the containers is managed by APIs. Here is an example of such microservice architecture:</li>
-<li> <img src='/assets/docker_img11.png' height='300'> </img> </li>
+<li> <img src='/assets/docker_img11.png' height='400'> </img> </li>
 <li> When the container is stopped, its data/state is saved and when they are started again, it has all the saved data and states. So stopping and restarting does not affect any of its data.</li>
 </ul>
 
