@@ -19,7 +19,7 @@ images:
 
 <p> Isolated area of an OS with resource usage limits applied. </p>
 
-<img src='/assets/docker_img1.png' height='256'> </img>
+<img src='/assets/docker_img1.png' height='300'> </img>
 
 <p> There are two main building blocks of containers: Namespaces and cgroups (Control Groups). </p>
 
@@ -47,14 +47,14 @@ Because of isolation, containers are not aware of each other even if they are ru
 
 <p> This is how docker architecture looks like: </p>
 
-<img src='/assets/docker_img2.png' height='256'> </img>
+<img src='/assets/docker_img2.png' height='300'> </img>
 
 <p> We interact with docker client via CLI (or UI) and it makes API calls to docker daemon, which implements these APIs and listens for docker client. ContainerD handles execution/lifecycle operations like start, stop, pause and unpause. OCI (Open Container Initiative) layer does the interface with the kernel.  </p>
 <p> The reason why docker daemon and containerD are decoupled is that when docker daemon is restarted, it won’t affect any of the running containers. This is a super useful feature when we’re using docker in production. Docker can be upgraded to new versions without killing any of the running docker containers. After upgrade/restart, containerD rediscovers the running containers and connects with its shim process again.</p>
 <h3> What happens under the hood when we create a new container on Linux? </h3>
 <p> When the command is fired from CLI by the user, it makes an API call to the docker daemon, which then calls containerD via GRPC, which further calls shim process and runC. RunC spins up the container and exits, however shim remains connected to the container. This is also the case when multiple containers are spun up. </p>
 
-<img src='/assets/docker_img3.png' height='256'> </img>
+<img src='/assets/docker_img3.png' height='300'> </img>
 
 <h2> Docker Images Explained in Depth </h2>
 
@@ -79,13 +79,13 @@ Because of isolation, containers are not aware of each other even if they are ru
 <li> <strong> Content Addressable Storage:</strong> To ensure the security and make sure the image being pulled is the exact same as what was requested for, the hashes of all the layers are stored in manifest file and the hash of this file is used as an image ID. So when an image is pulled, the hash is calculated and matched with the original hash. </li>
 </ul>
 
-<img src='/assets/docker_img4.png' height='256'> </img>
+<img src='/assets/docker_img4.png' height='300'> </img>
 
 <h3> How image layering works? </h3>
 
 <ul>
   <li> There is a base layer, having all the OS related files like ubuntu. Even if the image has Ubuntu OS, the container of this image can run on any linux hosts like CentOS. The next layer can be the application code files and so on. </li>
-  <li> <img src='/assets/docker_img5.png' height='256'> </img> </li>
+  <li> <img src='/assets/docker_img5.png' height='300'> </img> </li>
   <li>The above image shows the different layers and also shows that the Ubuntu based container is running on the CentOS kernel of the host machine.</li>
   <li>There is also an storage driver (AuFS), which manages these layers and makes us feel that the image is a single blob instead of a bunch of layers.</li>
   <li>Each layer is stored as a directory on the host machine at the following location “/var/lib/docker/<storage_driver>(aufs in our case)/diff” (which is a local docker registry).</li>
@@ -101,11 +101,11 @@ Because of isolation, containers are not aware of each other even if they are ru
 <ul>
   <li> Docker registries can be both on cloud and on prem. There is a default registry called docker-hub. You can have your own on prem registries using Docker Trusted Registries (DTR), which comes with docker enterprise edition. </li>
   <li> There are two types of images on docker hub: Official images and unofficial images. </li>
-  <li> <img src='/assets/docker_img6.png' height='256'> </img> </li>
+  <li> <img src='/assets/docker_img6.png' height='300'> </img> </li>
   <li> Official images are at the top of the docker hub namespace, so that we can address them as docker.io/ubuntu. Docker’s default registry is docker hub, so if you are pulling the image from docker hub, you can also get rid of “docker.io/” from the name and directly run the command “docker pull ubuntu”. </li>
   <li> But this is somewhat misleading. The first part of the image name is registry name (like docker.io, Google Container Registry etc.), now inside each registry, there are repos (repositories) and in each repo, there are images (with name or tags like latest or some version number like 2.4.1).</li>
   <li> Therefore in the case of command “docker pull redis”, the name “redis” is the repo name. Note that we haven’t given the registry name and the image tag (or name) in the command. So by default docker takes docker-hub as default registry (docker.io) and “latest” as default image name (or tag). So the actual command would be “docker pull docker.io/redis:latest”.</li>
-  <li> <img src='/assets/docker_img7.png' height='256'> </img> </li>
+  <li> <img src='/assets/docker_img7.png' height='300'> </img> </li>
   <li> While pulling the image, if the tag is not specified, it will be added as “latest” by default but while pushing the image to hub, it doesn't add the tag “latest” to the pushed images by default. It’s manual and that means the image with the tag/name latest might not be the “latest” image. </li>
   <li> Unofficial images are under username/organization name like “docker.io/kaushal28:latest”.</li>
   <li> For each layer, there are two types of hashes, first one is content hashes, which are calculated before compressing the layers and the other one is distribution hashes, which are calculated after compression of the layers (When images are pushed to registries, they are compressed).</li>
@@ -127,11 +127,11 @@ Because of isolation, containers are not aware of each other even if they are ru
 <li>ENTRYPOINT is used to specify the entry point of your application (in a python based application, it can be python3 src/main.py).</li>
 <li>The instructions of the docker file will be read by the “docker build” command, from top to bottom and one at a time.</li>
 <li>Here is a sample Dockerfile for a Python based application:</li>
-<li> <img src='/assets/docker_img8.png' height='256'> </img> </li>
+<li> <img src='/assets/docker_img8.png' height='300'> </img> </li>
 <li> Once the Dockerfile is created, we can build the image using the following command: “docker build -t image_tag .”. This command builds a new image with the tag “image_tag” and uses the source code from the current directory (given as a “.” in the command) to build the image.  </li>
 <li> Here, in above command, we specified the current directory as the location of the application source code. Which is also known as build context. In build context, only include your code as the entire build context will be sent to docker daemon and if the docker daemon is remote and there are unnecessary files in build context, the resources will be wasted.</li>
 <li> Build context can be a remote GIT repository</li>
-<li> <img src='/assets/docker_img9.png' height='256'> </img> </li>
+<li> <img src='/assets/docker_img9.png' height='300'> </img> </li>
 <li> To use the build context from GIT repo, use this command: “docker build -t <image_tag> <git_repo_url_having_Dockerfile>”. </li>
 <li> Each instruction which creates a new layer, creates a temporary container, which in turn creates the layer and then the temporary container is discarded. </li>
 </ul>
@@ -150,10 +150,10 @@ Because of isolation, containers are not aware of each other even if they are ru
 <ul>
 <li> Smallest atomic unit in docker is a container (VM in virtualization word, pod in Kubernetes etc.). If we want to roll out an app using docker, we do it using one or more containers. </li>
 <li> Images are read only and containers are these read only image layers + a thin writable layer. </li>
-<li> <img src='/assets/docker_img10.png' height='256'> </img> </li>
+<li> <img src='/assets/docker_img10.png' height='300'> </img> </li>
 <li> If any container wants to change the image file, it can’t directly change it in the image as the image is read only, instead it makes a copy of that layer into its writable layer and then writes the changes.</li>
 <li> Containers are used in microservices. Each microservice has its own container doing only a single job and communication between the containers is managed by APIs. Here is an example of such microservice architecture:</li>
-<li> <img src='/assets/docker_img11.png' height='256'> </img> </li>
+<li> <img src='/assets/docker_img11.png' height='300'> </img> </li>
 <li> When the container is stopped, its data/state is saved and when they are started again, it has all the saved data and states. So stopping and restarting does not affect any of its data.</li>
 </ul>
 
