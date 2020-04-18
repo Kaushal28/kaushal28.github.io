@@ -161,7 +161,45 @@ Because of isolation, containers are not aware of each other even if they are ru
 
 <p> There are two types of logs: </p>
 <ul>
+  <li> Daemon logs </li>
+  <li> Container logs (logs of application running in the container) </li>
 </ul>
+
+<p> Daemon logs: </p>
+<p> In linux with systemd, the daemon logs are sent to journald and we can read them using journalctl -u docker.service and the systems without systemd, the daemon logs can be found at “/var/log/messages” </p>
+
+<p> Container Logs: </p>
+<p> The application to be run in a container should be designed such that it runs as PID1 and issues the logs to stdout and stderr. If the logs are being issued into a file, files can be linked to stdout and stderr. Another approach is to mount a host volume to the docker container so that the logs/files persist even if the generating container is discarded. </p>
+
+<p>Also in the latest docker versions (Enterprise Edition), logging drivers are supported. These drivers integrate the container logging with the already existing logging solutions like Syslog, Splunk, FluentD etc.</p>
+<p>We can set the default logging driver for the container from the “daemon.json” file. With this approach, it’s easy to access the container logs using command “docker logs <container_id/container_name>”. </p>
+  
+<h2> Useful Commands and their details </h2>
+<ul>
+  <li><strong>docker version</strong>: To get the version of docker client and server with other details like OS, build etc. </li>
+  <li><strong>docker info</strong>: Gives info about started/stopped/running containers, version information etc.</li>
+  <li><strong>docker pull “image_name”:</strong> To pull/download the image from docker hub to host</li>
+  <li><strong>docker run “image_name”</strong>: To spin up a new container</li>
+  <li>Some variation which is used frequently: <strong>docker run -d --name web -p 80:8080 namespace/image_name</strong>: This means run a new container in detached mode (in background) with name “web”, map the host port 80 to container’s port 8080 and the image to be used to create a container should be from the namespace “namespace” and the name of the image should be “image_name”. 
+
+  <li>Instead of detaching the container in background, if you want to interact with it, use following command: <strong> docker run -it --name “container_name” ubuntu:latest /bin/bash </strong></li>
+  <li>If the container is already running, you can use the following command to get into it: <strong> docker exec -it <container_id> /bin/bash </strong> </li>
+  <li>If we only want to run a few commands in the running container, then instead of getting interactive session from a running container, we can directly execute the commands using following command: <strong> docker exec <container_id> <command> </strong>. This means that instead of detaching, attach my terminal to the container's standard input stream, also name the container “container_name”, the image to be used is “ubuntu:latest” and start/run bash (bin/bash is the standard linux shell). </li>
+  <li>To exit from the container’s bash, don’t type “exit” as it will end the bash process the leave the container with no processes running and therefore the container will be exited (killed). Instead press Ctrl P + Q. This will keep running the container. If there are multiple processes other than bash, it’s okay to type “exit” and the container would be still in running state. </li>
+
+  <li>To get the list of port mappings for a container, use following command: <strong> docker port <container_id/container_name> </strong> </li>
+
+  <li><strong>docker ps</strong>: To see running containers. Include “-a” to also include the list of exited containers. </li>
+  <li><strong>docker images</strong>: To view the locally stored docker images on docker host </li>
+  <li><strong>docker stop container_name</strong>: Stop the container with name “container_name” </li>
+  <li>How to stop all the containers? (Even the containers which are exited): <strong>docker stop $(docker ps -aq)</strong>: This means run the docker stop command against the output of the docker ps command. Now the arguments to docker ps means list all the containers even if they are exited and do it quietly (only output their IDs).  </li>
+
+  <li> Now to remove all the containers: <strong>docker rm $(docker ps -aq) </strong> </li>
+  <li> To remove all the images: <strong>docker rmi $(docker images -q)</strong></li>
+
+  <li> Difference between <strong> docker stop</strong> and<strong> docker rm</strong>: <a href="https://stackoverflow.com/questions/33362856/whats-the-difference-between-docker-stop-and-docker-rm"> </a> </li>
+</ul>
+
 
 <br>
 <div id="disqus_thread"></div>
