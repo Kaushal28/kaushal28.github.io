@@ -30,7 +30,7 @@ Because of isolation, containers are not aware of each other even if they are ru
 <p> Following is the Linux namespace: </p>
 
 <ul>
-<li>Process ID (pid) (process ID table with pid1-the process which starts at boot time). What is pid1 in linux? <a href='https://unix.stackexchange.com/questions/369835/replacing-pid-1-in-linux'></a> </li>
+<li>Process ID (pid) (process ID table with pid1-the process which starts at boot time). What is pid1 in linux? <a href='https://unix.stackexchange.com/questions/369835/replacing-pid-1-in-linux'> https://unix.stackexchange.com/questions/369835/replacing-pid-1-in-linux </a> </li>
 <li>Network (net) (IP-address etc.)</li>
 <li>Filesystem/mount (mnt) (Root file system)</li>
 <li>Inter-proc comm (ipc)</li>
@@ -41,7 +41,7 @@ Because of isolation, containers are not aware of each other even if they are ru
 <p> Each container has its own isolated namespace. In isolated namespace, each container has its own isolated process tree with pid1, network stack, file system with root (“/” in linux, “C:\” in windows), IPC (process from single container has same shared memory space but isolated from processes from other containers), own hostname (via UTS) and user namespaces.  </p>
 <p> Now, when there are many isolated containers on a single host OS, there might be a problem of resource crunch (One container using too many resources (memory, disk space etc.)). To limit the resources each container uses, Control Groups are used.  </p>
 <p> Combining layered file system, namespaces and cgroups, containers can be created. </p>
-<p> Difference between docker containers and Virtual Machines: <a href='https://stackoverflow.com/questions/16047306/how-is-docker-different-from-a-virtual-machine'> </a> </p>
+<p> Difference between docker containers and Virtual Machines: <a href='https://stackoverflow.com/questions/16047306/how-is-docker-different-from-a-virtual-machine'> https://stackoverflow.com/questions/16047306/how-is-docker-different-from-a-virtual-machine </a> </p>
 
 <h2> Details of Docker Engine </h2>
 
@@ -109,7 +109,7 @@ Because of isolation, containers are not aware of each other even if they are ru
   <li> While pulling the image, if the tag is not specified, it will be added as “latest” by default but while pushing the image to hub, it doesn't add the tag “latest” to the pushed images by default. It’s manual and that means the image with the tag/name latest might not be the “latest” image. </li>
   <li> Unofficial images are under username/organization name like “docker.io/kaushal28:latest”.</li>
   <li> For each layer, there are two types of hashes, first one is content hashes, which are calculated before compressing the layers and the other one is distribution hashes, which are calculated after compression of the layers (When images are pushed to registries, they are compressed).</li>
-  <li> A good reference for image tagging: <a href='https://www.techrepublic.com/article/how-to-use-docker-tags-to-add-version-control-to-images/'> </a> </li>
+  <li> A good reference for image tagging: <a href='https://www.techrepublic.com/article/how-to-use-docker-tags-to-add-version-control-to-images/'> https://www.techrepublic.com/article/how-to-use-docker-tags-to-add-version-control-to-images/ </a> </li>
 </ul>
 
 <h2> Containerizing an Application </h2>
@@ -140,9 +140,9 @@ Because of isolation, containers are not aware of each other even if they are ru
 
 <ul>
 <li>We need to make our docker image as small as possible for faster downloads, lesser surface attacks etc. For that, we need to write our Dockerfile in such a way that it minimizes the space usage by minimizing the number of layers in the image and without multistage docker images, it is cumbersome. Refer this blog post for complete details:  </li>
-<li><a href=https://blog.alexellis.io/mutli-stage-docker-builds/> </a>  (best one)</li>
-<li><a href=https://stackoverflow.com/questions/33322103/multiple-froms-what-it-means/> </a></li>
-<li><a href=https://blog.bitsrc.io/a-guide-to-docker-multi-stage-builds-206e8f31aeb8> </a></li>
+<li><a href=https://blog.alexellis.io/mutli-stage-docker-builds/> https://blog.alexellis.io/mutli-stage-docker-builds/ </a>  (best one)</li>
+<li><a href=https://stackoverflow.com/questions/33322103/multiple-froms-what-it-means/> https://stackoverflow.com/questions/33322103/multiple-froms-what-it-means </a></li>
+<li><a href=https://blog.bitsrc.io/a-guide-to-docker-multi-stage-builds-206e8f31aeb8> https://blog.bitsrc.io/a-guide-to-docker-multi-stage-builds-206e8f31aeb8 </a></li>
 </ul>
 
 <h2> Working with Docker Containers </h2>
@@ -197,7 +197,7 @@ Because of isolation, containers are not aware of each other even if they are ru
   <li> Now to remove all the containers: <strong>docker rm $(docker ps -aq) </strong> </li>
   <li> To remove all the images: <strong>docker rmi $(docker images -q)</strong></li>
 
-  <li> Difference between <strong> docker stop</strong> and<strong> docker rm</strong>: <a href="https://stackoverflow.com/questions/33362856/whats-the-difference-between-docker-stop-and-docker-rm"> </a> </li>
+  <li> Difference between <strong> docker stop</strong> and<strong> docker rm</strong>: <a href="https://stackoverflow.com/questions/33362856/whats-the-difference-between-docker-stop-and-docker-rm"> https://stackoverflow.com/questions/33362856/whats-the-difference-between-docker-stop-and-docker-rm </a> </li>
 </ul>
 
 
